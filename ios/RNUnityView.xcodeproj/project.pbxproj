@@ -251,6 +251,8 @@
 					"$(SRCROOT)/../../../ios/UnityExport/Classes",
 					"$(SRCROOT)/../../../ios/UnityExport/Classes/Unity",
 					"$(SRCROOT)/../../../ios/UnityExport/Libraries",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/React-Core",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Yoga",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -268,6 +270,8 @@
 					"$(SRCROOT)/../../../ios/UnityExport/Classes",
 					"$(SRCROOT)/../../../ios/UnityExport/Classes/Unity",
 					"$(SRCROOT)/../../../ios/UnityExport/Libraries",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/React-Core",
+					"${SRCROOT}/../../../ios/Pods/Headers/Public/Yoga",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
