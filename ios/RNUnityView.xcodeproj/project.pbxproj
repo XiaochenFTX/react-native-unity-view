@@ -11,6 +11,7 @@
 		1B593B7D2052A50D00CBB34F /* RNUnityViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B593B772052A50C00CBB34F /* RNUnityViewManager.m */; };
 		1B593B7E2052A50D00CBB34F /* UnityUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B593B792052A50C00CBB34F /* UnityUtils.mm */; };
 		1B593B7F2052A50D00CBB34F /* RNUnityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B593B7A2052A50C00CBB34F /* RNUnityView.m */; };
+		56B399C42410FEF000D3EFA9 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 560370B7240F609D007B31EA /* UnityFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,7 @@
 		1B593B7A2052A50C00CBB34F /* RNUnityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNUnityView.m; sourceTree = "<group>"; };
 		1B593B7B2052A50D00CBB34F /* RNUnityViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNUnityViewManager.h; sourceTree = "<group>"; };
 		1B593B7C2052A50D00CBB34F /* UnityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnityUtils.h; sourceTree = "<group>"; };
+		560370B7240F609D007B31EA /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B399C42410FEF000D3EFA9 /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +63,7 @@
 				1B593B7C2052A50D00CBB34F /* UnityUtils.h */,
 				1B593B792052A50C00CBB34F /* UnityUtils.mm */,
 				1B593B602052A47600CBB34F /* Products */,
+				560370B0240E71F1007B31EA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,6 +73,14 @@
 				1B593B5F2052A47600CBB34F /* libRNUnityView.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		560370B0240E71F1007B31EA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				560370B7240F609D007B31EA /* UnityFramework.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +156,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -172,7 +184,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -199,7 +211,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -227,7 +239,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -253,6 +265,8 @@
 					"$(SRCROOT)/../../../ios/UnityExport/Libraries",
 					"${SRCROOT}/../../../ios/Pods/Headers/Public/React-Core",
 					"${SRCROOT}/../../../ios/Pods/Headers/Public/Yoga",
+					"$(SRCROOT)/../../../ios/UnityExport/Classes/PluginBase",
+					"$(SRCROOT)/../../../ios/UnityExport/Libraries/Plugins/iOS",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -272,6 +286,8 @@
 					"$(SRCROOT)/../../../ios/UnityExport/Libraries",
 					"${SRCROOT}/../../../ios/Pods/Headers/Public/React-Core",
 					"${SRCROOT}/../../../ios/Pods/Headers/Public/Yoga",
+					"$(SRCROOT)/../../../ios/UnityExport/Classes/PluginBase",
+					"$(SRCROOT)/../../../ios/UnityExport/Libraries/Plugins/iOS",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -1,22 +1,17 @@
-#include "RegisterMonoModules.h"
-#include "RegisterFeatures.h"
-#include <csignal>
-#import <UIKit/UIKit.h>
-#import "UnityInterface.h"
 #import "UnityUtils.h"
-#import "UnityAppController.h"
+#import <UIKit/UIKit.h>
 
-// Hack to work around iOS SDK 4.3 linker problem
-// we need at least one __TEXT, __const section entry in main application .o files
-// to get this section emitted at right time and so avoid LC_ENCRYPTION_INFO size miscalculation
-static const int constsection = 0;
+#include "RNUnityMessageHandler.h"
+#include <csignal>
+#include <UnityFramework/UnityFramework.h>
+
 
 bool unity_inited = false;
 
 int g_argc;
 char** g_argv;
 
-void UnityInitTrampoline();
+//void UnityInitTrampoline();
 
 extern "C" void InitArgs(int argc, char* argv[])
 {
@@ -29,6 +24,34 @@ extern "C" bool UnityIsInited()
     return unity_inited;
 }
 
+UnityFramework* UnityFrameworkLoad()
+{
+    NSString* bundlePath = nil;
+    bundlePath = [[NSBundle mainBundle] bundlePath];
+    bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
+
+    NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
+    if ([bundle isLoaded] == false) [bundle load];
+
+    UnityFramework* ufw = [bundle.principalClass getInstance];
+    if (![ufw appController])
+    {
+        // unity is not initialized
+        [ufw setExecuteHeader: &_mh_execute_header];
+    }
+    return ufw;
+}
+
+static NSHashTable* mUnityEventListeners = [NSHashTable weakObjectsHashTable];
+static BOOL _isUnityReady = NO;
+
+void OnUnityMessage(const char* message)
+{
+    for (id<UnityEventListener> listener in mUnityEventListeners) {
+        [listener onMessage:[NSString stringWithUTF8String:message]];
+    }
+}
+
 extern "C" void InitUnity()
 {
     if (unity_inited) {
@@ -36,48 +59,36 @@ extern "C" void InitUnity()
     }
     unity_inited = true;
 
-    UnityInitStartupTime();
+    SetOnUnityMessage(OnUnityMessage);
     
     @autoreleasepool
     {
-        UnityInitTrampoline();
-        UnityInitRuntime(g_argc, g_argv);
-        
-        RegisterMonoModules();
-        NSLog(@"-> registered mono modules %p\n", &constsection);
-        RegisterFeatures();
-        
-        // iOS terminates open sockets when an application enters background mode.
-        // The next write to any of such socket causes SIGPIPE signal being raised,
-        // even if the request has been done from scripting side. This disables the
-        // signal and allows Mono to throw a proper C# exception.
-        std::signal(SIGPIPE, SIG_IGN);
+        id ufw = UnityFrameworkLoad();
+        [ufw runEmbeddedWithArgc:g_argc argv:g_argv appLaunchOpts:nil];
     }
 }
 
 extern "C" void UnityPostMessage(NSString* gameObject, NSString* methodName, NSString* message)
 {
-    UnitySendMessage([gameObject UTF8String], [methodName UTF8String], [message UTF8String]);
+
+    [UnityFramework.getInstance sendMessageToGOWithName:[gameObject UTF8String] functionName:[methodName UTF8String] message:[message UTF8String]];
 }
 
 extern "C" void UnityPauseCommand()
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UnityPause(1);
+        [UnityFramework.getInstance pause:true];
     });
 }
 
 extern "C" void UnityResumeCommand()
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UnityPause(0);
+        [UnityFramework.getInstance pause:false];
     });
 }
 
 @implementation UnityUtils
-
-static NSHashTable* mUnityEventListeners = [NSHashTable weakObjectsHashTable];
-static BOOL _isUnityReady = NO;
 
 + (BOOL)isUnityReady
 {
@@ -89,10 +100,11 @@ static BOOL _isUnityReady = NO;
     if (!_isUnityReady) {
         return;
     }
-    UnityAppController* unityAppController = GetAppController();
-    
+
+    UnityAppController* unityAppController = [UnityFramework.getInstance appController];
+
     UIApplication* application = [UIApplication sharedApplication];
-    
+
     if ([notification.name isEqualToString:UIApplicationWillResignActiveNotification]) {
         [unityAppController applicationWillResignActive:application];
     } else if ([notification.name isEqualToString:UIApplicationDidEnterBackgroundNotification]) {
@@ -145,22 +157,10 @@ static BOOL _isUnityReady = NO;
         
         // Always keep RN window in top
         application.keyWindow.windowLevel = UIWindowLevelNormal + 1;
-        
         InitUnity();
-        
-        UnityAppController *controller = GetAppController();
-        [controller application:application didFinishLaunchingWithOptions:nil];
-        [controller applicationDidBecomeActive:application];
-        
+
         [UnityUtils listenAppState];
     });
-}
-
-extern "C" void onUnityMessage(const char* message)
-{
-    for (id<UnityEventListener> listener in mUnityEventListeners) {
-        [listener onMessage:[NSString stringWithUTF8String:message]];
-    }
 }
 
 + (void)addUnityEventListener:(id<UnityEventListener>)listener

@@ -8,6 +8,7 @@
 
 #import "RNUnityViewManager.h"
 #import "RNUnityView.h"
+#include <UnityFramework/UnityFramework.h>
 
 @implementation RNUnityViewManager
 
@@ -19,10 +20,10 @@ RCT_EXPORT_MODULE(UnityView)
 {
     self.currentView = [[RNUnityView alloc] init];
     if ([UnityUtils isUnityReady]) {
-        [self.currentView setUnityView: [GetAppController() unityView]];
+        [self.currentView setUnityView: [[UnityFramework.getInstance appController] unityView]];
     } else {
         [UnityUtils createPlayer:^{
-            [self.currentView setUnityView: [GetAppController() unityView]];
+            [self.currentView setUnityView: [[UnityFramework.getInstance appController] unityView]];
         }];
     }
     return self.currentView;
