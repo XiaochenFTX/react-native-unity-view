@@ -31,6 +31,6 @@ android {
 }
 
 dependencies {
-    compile project(':UnityExport')
-    compile 'com.facebook.react:react-native:+'
+    implementation project(':UnityExport')
+    implementation 'com.facebook.react:react-native:+'
 }

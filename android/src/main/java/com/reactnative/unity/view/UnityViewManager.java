@@ -5,13 +5,8 @@ import android.view.View;
 
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
-
-import java.util.Map;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by xzper on 2018-02-07.
@@ -48,6 +43,7 @@ public class UnityViewManager extends SimpleViewManager<UnityView> implements Li
                 }
             });
         }
+
         return view;
     }
 
