@@ -8,7 +8,7 @@
 
 #import "RNUnityViewManager.h"
 #import "RNUnityView.h"
-#include <UnityFramework/UnityFramework.h>
+#import <UnityFramework/UnityFramework.h>
 
 @implementation RNUnityViewManager
 
