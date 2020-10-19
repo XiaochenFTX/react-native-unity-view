@@ -1,7 +1,6 @@
 package com.reactnative.unity.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.view.ViewGroup;
@@ -30,9 +29,6 @@ public class UnityUtils {
             new CopyOnWriteArraySet<>();
 
     public static UnityPlayer getPlayer() {
-        if (!_isUnityReady) {
-            return null;
-        }
         return unityPlayer;
     }
 
@@ -42,6 +38,11 @@ public class UnityUtils {
 
     public static boolean isUnityPaused() {
         return _isUnityPaused;
+    }
+
+    protected static String updateUnityCommandLineArguments(String cmdLine)
+    {
+        return cmdLine;
     }
 
     public static void createPlayer(final Activity activity, final CreateCallback callback) {
@@ -59,27 +60,21 @@ public class UnityUtils {
                     fullScreen = true;
                 }
 
+
+                String cmdLine = updateUnityCommandLineArguments(activity.getIntent().getStringExtra("unity"));
+                activity.getIntent().putExtra("unity", cmdLine);
+
                 unityPlayer = new UnityPlayer(activity);
-
-                try {
-                    // wait a moument. fix unity cannot start when startup.
-                    Thread.sleep( 1000 );
-                } catch (Exception e) {
-                }
-
-                // start unity
-                addUnityViewToBackground();
-                unityPlayer.windowFocusChanged(true);
-                unityPlayer.requestFocus();
-                unityPlayer.resume();
 
                 // restore window layout
                 if (!fullScreen) {
                     activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
+
                 _isUnityReady = true;
                 callback.onReady();
+
             }
         });
     }
@@ -144,13 +139,17 @@ public class UnityUtils {
         if (unityPlayer == null) {
             return;
         }
+
         if (unityPlayer.getParent() != null) {
             ((ViewGroup)unityPlayer.getParent()).removeView(unityPlayer);
         }
+
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         group.addView(unityPlayer, 0, layoutParams);
+
         unityPlayer.windowFocusChanged(true);
         unityPlayer.requestFocus();
         unityPlayer.resume();
+
     }
 }
