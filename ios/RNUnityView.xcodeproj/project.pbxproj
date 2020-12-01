@@ -257,6 +257,7 @@
 		1B593B692052A47600CBB34F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = arm64;
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../react-native/React/**",
@@ -278,6 +279,7 @@
 		1B593B6A2052A47600CBB34F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = arm64;
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../react-native/React/**",
