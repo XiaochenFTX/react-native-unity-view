@@ -23,16 +23,18 @@
 - (void)setUnityView:(UnityView *)view
 {
     self.uView = view;
+    
+    [(UIView *)self.uView removeFromSuperview];
+    [self insertSubview:(UIView *)self.uView atIndex:0];
+    ((UIView *)self.uView).frame = self.bounds;
+    [(UIView *)self.uView setNeedsLayout];
+    
     [self setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [(UIView *)self.uView removeFromSuperview];
-    [self insertSubview:(UIView *)self.uView atIndex:0];
-    ((UIView *)self.uView).frame = self.bounds;
-    [(UIView *)self.uView setNeedsLayout];
 }
 
 @end
