@@ -33,6 +33,8 @@ void UnityResumeCommand(void);
 + (void)addUnityEventListener:(id<UnityEventListener>)listener;
 + (void)removeUnityEventListener:(id<UnityEventListener>)listener;
 
++ (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options;
+
 @end
 
 #endif /* UnityUtils_h */
