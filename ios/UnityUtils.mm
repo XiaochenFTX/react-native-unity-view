@@ -1,5 +1,5 @@
 #import "UnityUtils.h"
-#import <UIKit/UIKit.h>
+
 
 #include "RNUnityMessageHandler.h"
 #include <csignal>
@@ -118,7 +118,9 @@ extern "C" void UnityResumeCommand()
     } else if ([notification.name isEqualToString:UIApplicationDidReceiveMemoryWarningNotification]) {
         [unityAppController applicationDidReceiveMemoryWarning:application];
     }
+    
 }
+
 
 + (void)listenAppState
 {
@@ -171,6 +173,12 @@ extern "C" void UnityResumeCommand()
 + (void)removeUnityEventListener:(id<UnityEventListener>)listener
 {
     [mUnityEventListeners removeObject:listener];
+}
+
++ (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
+{
+    UnityAppController* unityAppController = [UnityFramework.getInstance appController];
+    return [unityAppController application:application openURL:url options:options];
 }
 
 @end
